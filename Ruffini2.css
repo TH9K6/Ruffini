@@ -42,8 +42,10 @@ h3 {
     color: white;
     background-color: rgba(18, 136, 126, 0.733);
     width: fit-content;
+    width: 5%;
     min-width: 5%;
     text-align: center;
+    margin: 3px;
 }
 #espressione {
     border: solid 2px rgba(56, 196, 184, 0.678);
@@ -64,4 +66,8 @@ h3 {
 }
 #input {
     display: flex;
+}
+p {
+    color: lightgrey;;
+    margin: 3px 0;
 }
