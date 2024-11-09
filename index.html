@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link href="Ruffini.css" rel="stylesheet" id="stylesheet">
+        <title>Teorema di Ruffini</title>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <div id="container">
+            <button onclick="changeTheme()" id="changeTheme" class="item"><img alt="Change Theme" src="nightmode.png" id="nightmode"><img alt="changeTheme" src="day.png" id="day"></button>
+            <h3>Inserire l'espressione:</h3>
+            <div id="input">
+                <input type="text" id="espressione">
+                <button id="trova">Trova</button>
+            </div>
+            <p id="result"></p>
+            <p>Distanzia i monomi e metti tra coefficiente e incognita il segno di moltiplicazione: "*"</p>
+            <p>Esempio:</p>
+            <p>x^3 -2*x +1</p>
+        </div>
+        <script src="Ruffini.js"></script>
+    </body>
+</html>
