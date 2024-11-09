@@ -2,9 +2,18 @@ document.getElementById('trova').addEventListener('click', function() {
     const expression = document.getElementById('espressione').value;
     const formattedExpression = expression.replace(/\^/g, '**').replace(/x/gi, 'x');
     findZero(formattedExpression);
-  });
-  
-  function findZero(expression) {
+});
+
+function gcd(a, b) {
+    return b === 0 ? a : gcd(b, a % b);
+}
+
+function simplifyFraction(numerator, denominator) {
+    const gcdValue = gcd(Math.abs(numerator), Math.abs(denominator));
+    return [numerator / gcdValue, denominator / gcdValue];
+}
+
+function findZero(expression) {
     const espressione = expression;
     const exp = expression.split(' ');
     const p = [];
@@ -12,8 +21,8 @@ document.getElementById('trova').addEventListener('click', function() {
     const numeratori = [];
     const denominatori = [];
     const zeri = [];
-    const zeriPossibili = [];
-  
+    const zeriPossibili = new Set();
+
     exp.forEach(piece => {
         piece = piece.replace(/\+/g, '').replace(/-/g, '');
         if (piece.match(/^x/i)) {
@@ -24,7 +33,7 @@ document.getElementById('trova').addEventListener('click', function() {
             q.push(piece.split('*')[0]);
         }
     });
-  
+
     p.forEach(number => {
         for (let divisore = 1; divisore <= parseInt(number); divisore++) {
             if (parseInt(number) % divisore === 0) {
@@ -32,7 +41,7 @@ document.getElementById('trova').addEventListener('click', function() {
             }
         }
     });
-  
+
     q.forEach(number => {
         for (let divisore = 1; divisore <= parseInt(number); divisore++) {
             if (parseInt(number) % divisore === 0) {
@@ -40,21 +49,26 @@ document.getElementById('trova').addEventListener('click', function() {
             }
         }
     });
-  
+
     numeratori.forEach(numeratore => {
         denominatori.forEach(denominatore => {
-            zeriPossibili.push(denominatore === '1' ? `${numeratore}` : `${numeratore}/${denominatore}`);
+            if (denominatore === '1') {
+                zeriPossibili.add(`${numeratore}`);
+            } else {
+                const [simpNum, simpDen] = simplifyFraction(parseInt(numeratore), parseInt(denominatore));
+                zeriPossibili.add(`${simpNum}/${simpDen}`);
+            }
         });
     });
-  
-    zeriPossibili.forEach(zero => {
+
+    Array.from(zeriPossibili).forEach(zero => {
         let result = 0;
         let espressioneTemp = espressione;
         if (!espressioneTemp.match(/x/i)) {
             espressioneTemp = espressioneTemp.replace(new RegExp(`${zero}`, 'gi'), `${zero}`);
         }
         espressioneTemp = espressioneTemp.replace(/x/gi, `(${zero})`);
-        const index = zeriPossibili.indexOf(zero);
+        const index = Array.from(zeriPossibili).indexOf(zero);
         espressioneTemp = espressioneTemp.split(' ');
         espressioneTemp.forEach(piece => {
             result += Math.round(eval(piece) * 10000) / 10000;
@@ -66,7 +80,7 @@ document.getElementById('trova').addEventListener('click', function() {
             zeri.splice(zeri.indexOf(zero), 1);
         }
     });
-  
+
     const resultElement = document.getElementById('result');
     resultElement.innerHTML = '';
     zeri.forEach(zeroDelPolinomio => {
@@ -74,7 +88,8 @@ document.getElementById('trova').addEventListener('click', function() {
         para.textContent = zeroDelPolinomio;
         resultElement.appendChild(para);
     });
-  }
+}
+
 
 function changeTheme() {
     let CSSlink = document.querySelector("#stylesheet");
