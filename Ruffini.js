@@ -22,7 +22,7 @@ function findZero(expression) {
     const denominatori = [];
     const zeri = [];
     const zeriPossibili = new Set();
-    const zeriEval = [];
+    const zeriEval = new Set();
 
     exp.forEach(piece => {
         piece = piece.replace(/\+/g, '').replace(/-/g, '');
@@ -69,22 +69,21 @@ function findZero(expression) {
         if (result === 0) {
             zeri.push(zero);
         }
-        if (zeri.filter(z => z === zero).length === 2) {
-            zeri.splice(zeri.indexOf(zero), 1);
-        }
     });
 
+    // Remove duplicates
+    const uniqueZeri = [];
     zeri.forEach(zero => {
-        zeriEval.push(eval(zero));
         const zeroEval = eval(zero);
-        if (zeriEval.filter(z => z === zeroEval).length > 1) {
-            zeri.splice(zeri.indexOf(zero), 1);
+        if (!zeriEval.has(zeroEval)) {
+            zeriEval.add(zeroEval);
+            uniqueZeri.push(zero);
         }
     });
 
     const resultElement = document.getElementById('result');
     resultElement.innerHTML = '';
-    zeri.forEach(zeroDelPolinomio => {
+    uniqueZeri.forEach(zeroDelPolinomio => {
         const para = document.createElement('p');
         para.textContent = zeroDelPolinomio;
         resultElement.appendChild(para);
